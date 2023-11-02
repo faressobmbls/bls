@@ -1,0 +1,226 @@
+# // ==UserScript==
+// @name         Pass vérification automatique
+// @namespace    http://tampermonkey.net/
+// @version      1
+// @description  Modifying functions on a website
+// @author       Snapchat :enima420
+// @match        https://algeria.blsspainglobal.com/*
+// @match        https://algeria.blsspainglobal.com/
+// @match        https://algeria.blsspainglobal.com/*/*/visatype?data=*
+// @icon         https://algeria.blsspainglobal.com/assets/images/logo.png
+// @grant        none
+// ==/UserScript==
+
+
+//--- BADAL LAHNA  ****  PUT YOUE INFO HERE  ----/////////
+//______________________________________________________
+
+//==>  Prime Time , Premium , Normal <==
+
+var TypeRDV = 'Normal';
+
+
+//==> Center Location  ==> Oran , Algiers <==
+
+var Location1 = "Algiers";
+
+
+
+//==> TYPE  ==> Individual , Family <==
+
+var Typ = "Individual";
+
+//==> Family Members  ==> 1 ou 2 ou 3 ou 4 ou 5 ou ... <==
+
+var nmber = "1";
+
+//______________________________________________________
+
+
+for (var z = 1; z <= 5; z++) {
+    var AppointmentCategory = TypeRDV; // BADAL LAHNA TYPE of AppointmentCategory ==> Prime Time , Premium , Normal
+
+    var AppointmentCategorydropdownlist = $("#AppointmentCategoryId" + z).data("kendoDropDownList");
+    var AppointmentCategoryToSelect = AppointmentCategorydropdownlist.dataSource.data().find(item => item.Name === AppointmentCategory);
+
+    AppointmentCategorydropdownlist.open();
+
+    if (AppointmentCategoryToSelect) {
+        var option = AppointmentCategorydropdownlist.ul.find("li:contains('" + AppointmentCategory + "')");
+        option.click();
+    }
+    if(document.getElementById('AppointmentCategoryId' + z).value!='') var categoryid = document.getElementById('AppointmentCategoryId' + z).value;
+
+}
+
+
+
+for (var i = 1; i <= 5; i++) {
+    var VisaType = 'Schengen visa';
+    var VisaTypedropdownlist = $("#VisaType" + i).data("kendoDropDownList");
+    var VisaTypeToSelect = VisaTypedropdownlist.dataSource.data().find(item => item.Name === VisaType);
+
+
+    VisaTypedropdownlist.open();
+
+    if (VisaTypeToSelect) {
+
+        var options = VisaTypedropdownlist.ul.find("li:contains('" + VisaType + "')");
+        option.click();
+    }
+    if(document.getElementById('VisaType' + i).value!='') var visatypeid = document.getElementById('VisaType' + i).value;
+
+}
+
+
+
+for (var j = 1; j <= 5; j++) {
+    var VisaSubType = 'Schengen Visa';
+    var VisaSubTypedropdownlist = $("#VisaSubType" + j).data("kendoDropDownList");
+    var VisaSubTypeToSelect = VisaSubTypedropdownlist.dataSource.data().find(item => item.Name === VisaSubType);
+
+    VisaSubTypedropdownlist.open();
+
+    if (VisaSubTypeToSelect) {
+        var option1 = VisaSubTypedropdownlist.ul.find("li:contains('" + VisaSubType + "')");
+        option1.click();
+    }
+    if(document.getElementById('VisaSubType' + j).value!='') var visasubtypeid = document.getElementById('VisaSubType' + j).value;
+
+}
+
+
+for (var t = 1; t <= 5; t++) {
+
+    var CenterLocation = Location1; // BADAL LAHNA TYPE of Center Location  ==> Oran , Premium
+
+    var Locationdropdownlist = $("#Location" + t).data("kendoDropDownList");
+    var LocationToSelect = Locationdropdownlist.dataSource.data().find(item => item.Name === CenterLocation);
+
+    Locationdropdownlist.open();
+
+    if (LocationToSelect) {
+        var option2 = Locationdropdownlist.ul.find("li:contains('" + CenterLocation + "')");
+        option2.click();
+    }
+    if(document.getElementById('Location' + t).value!='') var Locationid = document.getElementById('Location' + t).value;
+
+}
+
+
+var AppointmentFor= Typ; // BADAL LAHNA TYPE  ==> Individual , Family
+
+var FamilyMembersNo=nmber; // BADAL LAHNA Family Members  ==> 1 ou 2 ou 3 ou 4 ou 5 ou ......
+
+if(FamilyMembersNo>1){
+
+    var mb3Divs = document.querySelectorAll('.mb-3');
+
+
+    var highestZIndex = -1;
+    var divWithHighestZIndexAndDisplay = null;
+
+
+    mb3Divs.forEach(function (mb3Div) {
+
+        var dFlexDivs = mb3Div.querySelectorAll('.d-flex');
+        if (dFlexDivs.length === 1) {
+            var radioDivs = dFlexDivs[0].querySelectorAll('.form-check.radio-bg-light');
+            if (radioDivs.length === 2) {
+
+                var zIndex = window.getComputedStyle(mb3Div).getPropertyValue('z-index');
+
+
+                zIndex = parseInt(zIndex, 10);
+                if (zIndex > highestZIndex) {
+
+                    var displayStyle = window.getComputedStyle(mb3Div).getPropertyValue('display');
+                    if (displayStyle !== 'none') {
+                        highestZIndex = zIndex;
+                        divWithHighestZIndexAndDisplay = mb3Div;
+                    }
+                }
+            }
+        }
+    });
+
+
+    if (divWithHighestZIndexAndDisplay) {
+
+        var radioInputs = divWithHighestZIndexAndDisplay.querySelectorAll('input[type="radio"]');
+
+
+        radioInputs.forEach(function (radioInput) {
+            if (radioInput.value === 'Family') {
+
+            radioInput.click()
+            radioInput.checked=true;
+            }
+        });
+    }
+
+    setTimeout(function(){
+
+            var AcceptButton =document.getElementsByClassName('btn btn-success');
+           AcceptButton[2].click();
+
+
+    },1000);
+    for (var l = 1; l <= 5; l++) {
+        var FamilyMembersNodropdownlist = $("#ApplicantsNo" + l).data("kendoDropDownList");
+
+        FamilyMembersNodropdownlist.open();
+
+
+        if (FamilyMembersNo <= FamilyMembersNodropdownlist.dataSource.data().length) {
+            var option3 = FamilyMembersNodropdownlist.ul.find("li:eq(" + (FamilyMembersNo - 2) + ")");
+            option3.click();
+        }
+    }
+
+    AppointmentFor="Family";
+}
+
+
+var data=window.location.href.slice(57);
+
+var originalUrl = 'https://algeria.blsspainglobal.com/DZA/blsAppointment/ManageAppointment?appointmentFor=Family&applicantsNo=2&visaType=c805c157-7e8f-4932-89cf-d7ab69e1af96&visaSubType=b563f6e3-58c2-48c4-ab37-a00145bfce7c&appointmentCategory=5c2e8e01-796d-4347-95ae-0c95a9177b26&location=undefined&data=FnkBAS15RpFINmW9BqgLpO1Hsv661Jq3KhZISAPePr2wOI2%2f0db8eiYUA9DPnJfDsczuv4uLJ3%2bF%2ffOtbS0beSiRYYPDYTkqN3t1PJ1G2SpkmlSYrCs85QyR97YiXV4lehANzP6PiDKUa4SSiIEWxzrY7gqQHDJU1XX48ItmsVg%3d#';
+
+var parts = originalUrl.split('?');
+var baseUrl = parts[0];
+var queryParams = parts[1];
+var paramPairs = queryParams.split('&');
+var modifiedParams = [];
+
+paramPairs.forEach(function (paramPair) {
+    var keyValue = paramPair.split('=');
+    var paramName = keyValue[0];
+    var paramValue = keyValue[1];
+
+    if (paramName === 'appointmentFor') {
+        paramValue = AppointmentFor;}
+    else if (paramName === 'applicantsNo') {
+        paramValue = FamilyMembersNo;
+    }
+     else if (paramName === 'appointmentCategory') {
+        paramValue = categoryid;
+    } else if (paramName === 'location') {
+        paramValue = Locationid;
+    } else if (paramName === 'data') {
+        paramValue = data;
+    }
+
+    modifiedParams.push(paramName + '=' + paramValue);
+});
+
+var modifiedQueryString = modifiedParams.join('&');
+var modifiedUrl = baseUrl + '?' + modifiedQueryString;
+
+
+if(Locationid!='') {
+    setTimeout(()=>{
+        window.location.replace(modifiedUrl)
+    },1000)
+}
+
+
